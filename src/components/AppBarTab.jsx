@@ -4,11 +4,10 @@ import Text from './Text';
 
 const styles = StyleSheet.create({
   tab: {
+    width: '50%',
     flexGrow: 1,
-    flexBasis: 0,
   },
   link: {
-    alignSelf: 'stretch',
     alignItems: 'center',
     paddingVertical: 20,
   },
