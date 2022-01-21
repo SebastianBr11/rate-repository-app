@@ -5,10 +5,12 @@ const theme = {
     textLight: 'white',
     primary: '#0366d6',
     appBarBg: '#24292e',
+    bg: '#e1e4e8',
   },
   fontSizes: {
     body: 14,
     subheading: 16,
+    heading: 20,
   },
   fonts: {
     main: 'System',
