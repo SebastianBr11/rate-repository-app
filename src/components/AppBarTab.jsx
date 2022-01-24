@@ -1,11 +1,10 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Dimensions, Pressable, StyleSheet } from 'react-native';
 import { Link } from 'react-router-native';
 import Text from './Text';
 
 const styles = StyleSheet.create({
   tab: {
-    width: '50%',
-    flexGrow: 1,
+    width: Dimensions.get('screen').width * 0.5,
   },
   link: {
     alignItems: 'center',

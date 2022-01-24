@@ -15,10 +15,11 @@ const AppBar = () => {
   return (
     <View style={styles.container}>
       <ScrollView
-        contentContainerStyle={{ flexDirection: 'row', flexGrow: 1 }}
+        contentContainerStyle={{
+          flexDirection: 'row',
+        }}
         horizontal
       >
-        <AppBarTab title='Repositories' navigateTo='/' />
         <AppBarTab title='Repositories' navigateTo='/' />
         <AppBarTab title='Sign in' navigateTo='/signIn' />
       </ScrollView>
