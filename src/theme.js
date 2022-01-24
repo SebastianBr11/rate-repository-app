@@ -7,6 +7,7 @@ const theme = {
     appBarBg: '#24292e',
     mainBackground: '#e1e4e8',
     inputBorder: '#aaa',
+    error: '#d73a4a',
   },
   fontSizes: {
     body: 14,

@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
-import { Button, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import * as yup from 'yup';
 import theme from '../theme';
 import FormikTextInput from './FormikTextInput';
 import Text from './Text';
@@ -7,6 +8,7 @@ import Text from './Text';
 const styles = StyleSheet.create({
   view: {
     padding: 20,
+    backgroundColor: '#fff',
   },
   button: {
     backgroundColor: theme.colors.primary,
@@ -16,9 +18,18 @@ const styles = StyleSheet.create({
   },
 });
 
+const validationSchema = yup.object().shape({
+  username: yup.string().required('Username is required'),
+  password: yup.string().required('Password is required'),
+});
+
 const SignIn = ({ onSubmit }) => {
   return (
-    <Formik initialValues={{ username: '', password: '' }} onSubmit={onSubmit}>
+    <Formik
+      initialValues={{ username: '', password: '' }}
+      onSubmit={onSubmit}
+      validationSchema={validationSchema}
+    >
       {({ handleSubmit }) => (
         <View style={styles.view}>
           <FormikTextInput name='username' placeholder='Username' />
