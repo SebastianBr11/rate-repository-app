@@ -6,6 +6,7 @@ const theme = {
     primary: '#0366d6',
     appBarBg: '#24292e',
     mainBackground: '#e1e4e8',
+    inputBorder: '#aaa',
   },
   fontSizes: {
     body: 14,
