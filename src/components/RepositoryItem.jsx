@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   },
   topContent: {
     paddingLeft: 20,
+    flex: 1,
   },
   bottomContent: {
     marginTop: 20,

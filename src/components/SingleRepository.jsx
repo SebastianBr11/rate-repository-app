@@ -1,25 +1,50 @@
 import { useQuery } from '@apollo/client';
+import { FlatList } from 'react-native';
 import { useParams } from 'react-router-native';
-import { GET_REPOSITORY_BY_ID } from '../graphql/queries';
+import { GET_REPOSITORY_BY_ID, GET_REVIEWS_BY_ID } from '../graphql/queries';
 import RepositoryItem from './RepositoryItem';
+import ReviewItem from './ReviewItem';
+import ItemSeparator from './ItemSeparator';
 import Text from './Text';
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { data, loading, error } = useQuery(GET_REPOSITORY_BY_ID, {
+  const {
+    data: repoData,
+    loading: repoLoading,
+    error: repoError,
+  } = useQuery(GET_REPOSITORY_BY_ID, {
     fetchPolicy: 'cache-and-network',
     variables: { id },
   });
-  if (loading) return <Text>Loading...</Text>;
 
-  if (error) {
-    console.log(error);
+  const reviewQuery = useQuery(GET_REVIEWS_BY_ID, {
+    fetchPolicy: 'cache-and-network',
+    variables: { id },
+  });
+
+  if (repoLoading || reviewQuery.loading) return <Text>Loading...</Text>;
+
+  if (repoError || reviewQuery.error) {
+    console.log(repoError, reviewQuery.error);
     return <Text>Error</Text>;
   }
 
-  console.log(data);
+  const reviewNodes = reviewQuery.data.repository.reviews.edges.map(
+    edge => edge.node
+  );
 
-  return <RepositoryItem item={data.repository} showLinkButton />;
+  return (
+    <FlatList
+      data={reviewNodes}
+      keyExtractor={({ id }) => id}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      ItemSeparatorComponent={ItemSeparator}
+      ListHeaderComponent={() => (
+        <RepositoryItem item={repoData.repository} showLinkButton />
+      )}
+    />
+  );
 };
 
 export default SingleRepository;
