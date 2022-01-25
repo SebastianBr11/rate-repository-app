@@ -48,25 +48,33 @@ describe('RepositoryList', () => {
         ],
       };
 
-      const { findAllByTestId, } = render(
+      const { findAllByTestId } = render(
         <RepositoryListContainer repositories={repositories} />
       );
       const repositoryItems = await findAllByTestId('repositoryItem');
 
       repositoryItems.map((item, i) => {
-        const repo = repositories.edges[ i ].node;
-        expect(getByTextWithin(item, repo.fullName)).toBeTruthy()
-        expect(getByTextWithin(item, repo.description)).toBeTruthy()
-        expect(getByTextWithin(item, repo.language)).toBeTruthy()
-        expect(getByTextWithin(item, roundOverThousand(repo.forksCount))).toBeTruthy()
-        expect(getByTextWithin(item, roundOverThousand(repo.stargazersCount))).toBeTruthy()
-        expect(getByTextWithin(item, roundOverThousand(repo.ratingAverage))).toBeTruthy()
-        expect(getByTextWithin(item, roundOverThousand(repo.reviewCount))).toBeTruthy()
+        const repo = repositories.edges[i].node;
+        expect(getByTextWithin(item, repo.fullName)).toBeTruthy();
+        expect(getByTextWithin(item, repo.description)).toBeTruthy();
+        expect(getByTextWithin(item, repo.language)).toBeTruthy();
+        expect(
+          getByTextWithin(item, roundOverThousand(repo.forksCount))
+        ).toBeTruthy();
+        expect(
+          getByTextWithin(item, roundOverThousand(repo.stargazersCount))
+        ).toBeTruthy();
+        expect(
+          getByTextWithin(item, roundOverThousand(repo.ratingAverage))
+        ).toBeTruthy();
+        expect(
+          getByTextWithin(item, roundOverThousand(repo.reviewCount))
+        ).toBeTruthy();
       });
     });
   });
 });
 
 const getByTextWithin = (node, text) => {
-  return within(node).getByText(text)
-} 
+  return within(node).getByText(text);
+};

@@ -20,6 +20,30 @@ const styles = StyleSheet.create({
   },
 });
 
+export const SignInContainer = ({ onSubmit }) => (
+  <Formik
+    initialValues={{ username: '', password: '' }}
+    onSubmit={onSubmit}
+    validationSchema={validationSchema}
+  >
+    {({ handleSubmit }) => (
+      <View style={styles.view}>
+        <FormikTextInput name='username' placeholder='Username' />
+        <FormikTextInput
+          secureTextEntry
+          name='password'
+          placeholder='Password'
+        />
+        <Pressable style={styles.button} onPress={handleSubmit}>
+          <Text color='textLight' fontSize='subheading'>
+            Sign In
+          </Text>
+        </Pressable>
+      </View>
+    )}
+  </Formik>
+);
+
 const validationSchema = yup.object().shape({
   username: yup.string().required('Username is required'),
   password: yup.string().required('Password is required'),
@@ -40,29 +64,7 @@ const SignIn = () => {
     }
   };
 
-  return (
-    <Formik
-      initialValues={{ username: '', password: '' }}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
-      {({ handleSubmit }) => (
-        <View style={styles.view}>
-          <FormikTextInput name='username' placeholder='Username' />
-          <FormikTextInput
-            secureTextEntry
-            name='password'
-            placeholder='Password'
-          />
-          <Pressable style={styles.button} onPress={handleSubmit}>
-            <Text color='textLight' fontSize='subheading'>
-              Sign In
-            </Text>
-          </Pressable>
-        </View>
-      )}
-    </Formik>
-  );
+  return <SignInContainer onSubmit={onSubmit} />;
 };
 
 export default SignIn;
