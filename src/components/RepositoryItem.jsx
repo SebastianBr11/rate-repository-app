@@ -1,6 +1,7 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Linking, StyleSheet, View } from 'react-native';
 import theme from '../theme';
 import { roundOverThousand } from '../utils';
+import Button from './Button';
 import Text from './Text';
 
 const styles = StyleSheet.create({
@@ -33,6 +34,9 @@ const styles = StyleSheet.create({
   image: {
     borderRadius: 5,
   },
+  button: {
+    marginTop: 10,
+  },
 });
 
 const RepositoryItem = ({
@@ -45,8 +49,16 @@ const RepositoryItem = ({
     ratingAverage,
     reviewCount,
     ownerAvatarUrl,
+    ...restItem
   },
+  showLinkButton,
 }) => {
+  const buttonHandler = () => {
+    if (showLinkButton) {
+      Linking.openURL(restItem.url);
+    }
+  };
+
   return (
     <View testID='repositoryItem' style={styles.item}>
       <View style={styles.top}>
@@ -84,6 +96,13 @@ const RepositoryItem = ({
           <Text>Rating</Text>
         </View>
       </View>
+      {showLinkButton && (
+        <Button
+          text='Open in GitHub'
+          onPress={buttonHandler}
+          style={styles.button}
+        />
+      )}
     </View>
   );
 };
