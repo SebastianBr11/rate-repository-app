@@ -34,7 +34,10 @@ const AppBar = () => {
 			>
 				<AppBarTab title='Repositories' navigateTo='/' />
 				{!data?.me ? (
-					<AppBarTab title='Sign in' navigateTo='/signIn' />
+					<>
+						<AppBarTab title='Sign in' navigateTo='/signIn' />
+						<AppBarTab title='Sign up' navigateTo='/signUp' />
+					</>
 				) : (
 					<>
 						<AppBarTab title='Create a review' navigateTo='/createReview' />

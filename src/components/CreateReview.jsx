@@ -9,7 +9,11 @@ import FormikTextInput from './FormikTextInput';
 const validationSchema = yup.object().shape({
 	ownerName: yup.string().required('Owner name is required'),
 	repositoryName: yup.string().required('Repository name is required'),
-	rating: yup.number().required('Rating is required').min(0).max(100),
+	rating: yup
+		.number()
+		.required('Rating is required')
+		.min(0, 'Rating must be at least 0')
+		.max(100, 'Rating must be at most 100'),
 	text: yup.string().optional(),
 });
 
@@ -22,7 +26,7 @@ const styles = StyleSheet.create({
 
 export const CreateReviewContainer = ({ onSubmit }) => (
 	<Formik
-		initialValues={{ username: '', password: '' }}
+		initialValues={{ ownerName: '', repositoryName: '', rating: 0 }}
 		onSubmit={onSubmit}
 		validationSchema={validationSchema}
 	>
