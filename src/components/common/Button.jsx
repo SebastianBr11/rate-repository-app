@@ -11,10 +11,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ onPress, children, text, style, ...props }) => {
+const Button = ({
+  onPress,
+  children,
+  text,
+  style,
+  color = 'textLight',
+  ...props
+}) => {
   return (
     <Pressable style={[styles.button, style]} onPress={onPress} {...props}>
-      <Text color='textLight' fontSize='subheading'>
+      <Text color={color} fontSize='subheading'>
         {children || text}
       </Text>
     </Pressable>
