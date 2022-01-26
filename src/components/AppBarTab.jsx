@@ -5,6 +5,7 @@ import Text from './common/Text';
 const styles = StyleSheet.create({
 	tab: {
 		width: Dimensions.get('screen').width * 0.5,
+		maxWidth: 300,
 	},
 	link: {
 		alignItems: 'center',
