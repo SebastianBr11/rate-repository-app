@@ -3,24 +3,42 @@ import { useEffect } from 'react';
 import { useDebounce } from 'use-debounce/lib';
 import { GET_REPOSITORIES_ORDERED } from '../graphql/queries';
 
-const useOrderedRepositories = ({ orderDirection, orderBy, searchQuery }) => {
-  const [debouncedQuery] = useDebounce(searchQuery, 500);
-  const [getRepositories, { data, error, loading, refetch }] = useLazyQuery(
-    GET_REPOSITORIES_ORDERED,
-    {
+const useOrderedRepositories = variables => {
+  const [debouncedQuery] = useDebounce(variables.searchQuery, 500);
+  const [getRepositories, { data, error, loading, refetch, fetchMore }] =
+    useLazyQuery(GET_REPOSITORIES_ORDERED, {
       fetchPolicy: 'cache-and-network',
-    }
-  );
+    });
+
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+
+    if (!canFetchMore) return;
+
+    fetchMore({
+      variables: {
+        ...variables,
+        searchQuery: debouncedQuery,
+        after: data.repositories.pageInfo.endCursor,
+      },
+    });
+  };
 
   useEffect(() => {
     (async () => {
       await getRepositories({
-        variables: { orderDirection, orderBy, searchKeyword: debouncedQuery },
+        variables: { ...variables, searchKeyword: debouncedQuery },
       });
     })();
-  }, [orderDirection, orderBy, debouncedQuery]);
+  }, [variables?.orderDirection, variables?.orderBy, debouncedQuery]);
 
-  return { repositories: data?.repositories, loading, error, refetch };
+  return {
+    repositories: data?.repositories,
+    fetchMore: handleFetchMore,
+    loading,
+    error,
+    refetch,
+  };
 };
 
 export default useOrderedRepositories;

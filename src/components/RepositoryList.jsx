@@ -79,6 +79,7 @@ export const RepositoryListContainer = ({
   setSort,
   searchQuery,
   onChangeSearch,
+  onEndReached,
 }) => {
   // Get the nodes from the edges array
   const repositoryNodes = repositories
@@ -105,6 +106,8 @@ export const RepositoryListContainer = ({
           />
         </>
       }
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
         <Pressable onPress={() => onPress(item.id)} key={item.id}>
@@ -123,8 +126,9 @@ const RepositoryList = () => {
 
   const onChangeSearch = query => setSearchQuery(query);
 
-  const { repositories } = useOrderedRepositories({
+  const { repositories, fetchMore } = useOrderedRepositories({
     searchQuery,
+    first: 8,
     ...getSortSettings(sort),
   });
 
@@ -134,6 +138,8 @@ const RepositoryList = () => {
 
   const closeMenu = () => setMenuVisible(false);
   const openMenu = () => setMenuVisible(true);
+
+  const onEndReached = () => fetchMore();
 
   return (
     <RepositoryListContainer
@@ -146,6 +152,7 @@ const RepositoryList = () => {
       setSort={setSort}
       searchQuery={searchQuery}
       onChangeSearch={onChangeSearch}
+      onEndReached={onEndReached}
     />
   );
 };

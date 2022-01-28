@@ -11,6 +11,10 @@ export const GET_REPOSITORIES = gql`
           ...RepositoryFields
         }
       }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
     }
   }
   ${REPOSITORY_FIELDS}
@@ -21,17 +25,25 @@ export const GET_REPOSITORIES_ORDERED = gql`
     $orderDirection: OrderDirection
     $orderBy: AllRepositoriesOrderBy
     $searchKeyword: String
+    $after: String
+    $first: Int
   ) {
     repositories(
       orderDirection: $orderDirection
       orderBy: $orderBy
       searchKeyword: $searchKeyword
+      after: $after
+      first: $first
     ) {
       edges {
         cursor
         node {
           ...RepositoryFields
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }
