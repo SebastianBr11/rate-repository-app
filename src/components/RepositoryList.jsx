@@ -6,7 +6,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import { Menu } from 'react-native-paper';
+import { Menu, Searchbar } from 'react-native-paper';
 import { useNavigate } from 'react-router-native';
 import useOrderedRepositories from '../hooks/useOrderedRepositories';
 import theme from '../theme';
@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     backgroundColor: theme.colors.mainBackground,
     alignSelf: 'stretch',
+  },
+  searchBar: {
+    margin: 15,
   },
 });
 
@@ -74,6 +77,8 @@ export const RepositoryListContainer = ({
   closeMenu,
   sort,
   setSort,
+  searchQuery,
+  onChangeSearch,
 }) => {
   // Get the nodes from the edges array
   const repositoryNodes = repositories
@@ -84,13 +89,21 @@ export const RepositoryListContainer = ({
     <FlatList
       data={repositoryNodes}
       ListHeaderComponent={
-        <SortingMenu
-          visible={menuVisible}
-          closeMenu={closeMenu}
-          openMenu={openMenu}
-          sort={sort}
-          selectSort={setSort}
-        />
+        <>
+          <Searchbar
+            style={styles.searchBar}
+            placeholder='Search'
+            value={searchQuery}
+            onChangeText={onChangeSearch}
+          />
+          <SortingMenu
+            visible={menuVisible}
+            closeMenu={closeMenu}
+            openMenu={openMenu}
+            sort={sort}
+            selectSort={setSort}
+          />
+        </>
       }
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
@@ -106,8 +119,14 @@ const RepositoryList = () => {
   const navigate = useNavigate();
   const [menuVisible, setMenuVisible] = useState(false);
   const [sort, setSort] = useState('latest');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const { repositories } = useOrderedRepositories(getSortSettings(sort));
+  const onChangeSearch = query => setSearchQuery(query);
+
+  const { repositories } = useOrderedRepositories({
+    searchQuery,
+    ...getSortSettings(sort),
+  });
 
   const onPress = id => {
     navigate('/repository/' + id);
@@ -125,6 +144,8 @@ const RepositoryList = () => {
       openMenu={openMenu}
       sort={sort}
       setSort={setSort}
+      searchQuery={searchQuery}
+      onChangeSearch={onChangeSearch}
     />
   );
 };
