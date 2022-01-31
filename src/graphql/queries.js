@@ -71,6 +71,7 @@ export const GET_REVIEWS_BY_ID = gql`
             text
             rating
             createdAt
+            repositoryId
             user {
               id
               username

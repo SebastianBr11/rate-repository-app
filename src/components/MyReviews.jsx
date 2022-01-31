@@ -12,7 +12,10 @@ const MyReviewsContainer = ({ reviews, onEndReached }) => {
       onEndReachedThreshold={0.5}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <ReviewItem review={{ repoName: item.repository.fullName, ...item }} />
+        <ReviewItem
+          showActions
+          review={{ repoName: item.repository.fullName, ...item }}
+        />
       )}
     />
   );
