@@ -21,3 +21,27 @@ export const PAGE_INFO = gql`
     startCursor
   }
 `;
+
+export const REVIEW_FIELDS = gql`
+  fragment ReviewFields on ReviewConnection {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        text
+        createdAt
+        rating
+        repositoryId
+        userId
+        repository {
+          fullName
+        }
+        id
+      }
+    }
+  }
+`;
