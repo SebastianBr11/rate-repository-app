@@ -1,12 +1,10 @@
-import { useQuery } from '@apollo/client';
 import { FlatList } from 'react-native';
-import { ME } from '../graphql/queries';
+import useProfile from '../hooks/useProfile';
 import ItemSeparator from './common/ItemSeparator';
 import ReviewItem from './ReviewItem';
 
 const MyReviewsContainer = ({ reviews, onEndReached }) => {
   const reviewNodes = reviews ? reviews.edges.map(edge => edge.node) : [];
-  console.log(reviewNodes);
   return (
     <FlatList
       data={reviewNodes}
@@ -21,33 +19,12 @@ const MyReviewsContainer = ({ reviews, onEndReached }) => {
 };
 
 const MyReviews = () => {
-  const { data, fetchMore, loading } = useQuery(ME, {
-    variables: { includeReviews: true, first: 8 },
-    fetchPolicy: 'cache-and-network',
-  });
+  const { me, fetchMore } = useProfile({ includeReviews: true, first: 8 });
 
-  const handleFetchMore = () => {
-    const canFetchMore = !loading && data?.me.reviews.pageInfo.hasNextPage;
-    console.log(loading, data?.me.reviews.pageInfo.hasNextPage);
-    if (!canFetchMore) return;
-    console.log('fetching more');
-
-    fetchMore({
-      variables: {
-        includeReviews: true,
-        first: 2,
-        after: data.me.reviews.pageInfo.endCursor,
-      },
-    });
-  };
-
-  const onEndReached = handleFetchMore();
+  const onEndReached = fetchMore();
 
   return (
-    <MyReviewsContainer
-      onEndReached={onEndReached}
-      reviews={data?.me.reviews}
-    />
+    <MyReviewsContainer onEndReached={onEndReached} reviews={me?.reviews} />
   );
 };
 

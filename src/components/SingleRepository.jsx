@@ -8,6 +8,26 @@ import ItemSeparator from './common/ItemSeparator';
 import Text from './common/Text';
 import { useMemo } from 'react';
 
+const SingleRepositoryContainer = ({ reviews, repoData, onEndReached }) => {
+  const reviewNodes = reviews?.edges.map(edge => edge.node);
+
+  return (
+    <FlatList
+      data={reviewNodes}
+      keyExtractor={({ id }) => id}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      ItemSeparatorComponent={ItemSeparator}
+      ListHeaderComponent={() =>
+        repoData ? (
+          <RepositoryItem item={repoData.repository} showLinkButton />
+        ) : null
+      }
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
+    />
+  );
+};
+
 const SingleRepository = () => {
   const { id } = useParams();
   const {
@@ -36,10 +56,6 @@ const SingleRepository = () => {
     return <Text>Error</Text>;
   }
 
-  const reviewNodes = reviewQuery.data?.repository.reviews.edges.map(
-    edge => edge.node
-  );
-
   const onEndReached = () => {
     const canFetchMore =
       !loading && reviewQuery.data?.repository.reviews.pageInfo.hasNextPage;
@@ -56,18 +72,10 @@ const SingleRepository = () => {
   };
 
   return (
-    <FlatList
-      data={reviewNodes}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item }) => <ReviewItem review={item} />}
-      ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={() =>
-        repoData ? (
-          <RepositoryItem item={repoData.repository} showLinkButton />
-        ) : null
-      }
+    <SingleRepositoryContainer
       onEndReached={onEndReached}
-      onEndReachedThreshold={0.5}
+      repoData={repoData}
+      reviews={reviewQuery.data?.repository.reviews}
     />
   );
 };

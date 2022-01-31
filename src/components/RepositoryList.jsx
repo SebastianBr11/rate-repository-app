@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Menu, Searchbar } from 'react-native-paper';
 import { useNavigate } from 'react-router-native';
-import useOrderedRepositories from '../hooks/useOrderedRepositories';
+import useRepositories from '../hooks/useRepositories';
 import theme from '../theme';
 import { getSortDescription, getSortSettings } from '../utils';
 import Button from './common/Button';
@@ -126,7 +126,7 @@ const RepositoryList = () => {
 
   const onChangeSearch = query => setSearchQuery(query);
 
-  const { repositories, fetchMore } = useOrderedRepositories({
+  const { repositories, fetchMore } = useRepositories({
     searchQuery,
     first: 8,
     ...getSortSettings(sort),
