@@ -51,19 +51,9 @@ export const GET_REPOSITORIES_ORDERED = gql`
 `;
 
 export const GET_REPOSITORY_BY_ID = gql`
-  query Repository($id: ID!) {
-    repository(id: $id) {
-      ...RepositoryFields
-      url
-    }
-  }
-  ${REPOSITORY_FIELDS}
-`;
-
-export const GET_REVIEWS_BY_ID = gql`
   query Repository($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
-      id
+      ...RepositoryFields
       reviews(first: $first, after: $after) {
         edges {
           node {
@@ -85,6 +75,7 @@ export const GET_REVIEWS_BY_ID = gql`
     }
   }
 
+  ${REPOSITORY_FIELDS}
   ${PAGE_INFO}
 `;
 

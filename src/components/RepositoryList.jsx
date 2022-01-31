@@ -139,8 +139,13 @@ const RepositoryList = () => {
   const closeMenu = () => setMenuVisible(false);
   const openMenu = () => setMenuVisible(true);
 
-  const onEndReached = () => fetchMore();
-
+  const onEndReached = ({distanceFromEnd}) =>  {
+    console.log(distanceFromEnd)
+    // Prevent fetching more on first render
+    if (distanceFromEnd > 0) {
+      fetchMore();
+    }
+  }
   return (
     <RepositoryListContainer
       onPress={onPress}
